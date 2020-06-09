@@ -7,46 +7,49 @@ $app->get('/admin', function() {
     
     User::verifyLogin();
 
-	$page = new PageAdmin();
+    $page = new PageAdmin();
 
-	$page->setTpl("index");
+    $page->setTpl("index");
 
 });
 
-$app->get('/admin/login', function(){
-
-	$page = new PageAdmin([
-		"header"=>false,
-		"footer"=>false
-	]);
-
-	$page->setTpl("login");
-});
-
-$app->post('/admin/login', function(){
-
-	User::login($_POST["login"], $_POST["password"]);
-
-	header("Location: /admin");
-	exit;
-});
-
-$app->get('/admin/logout', function(){
-
-	User::logout();
-	header("Location: /admin/login");
-	exit;
-	
-});
-
-$app->get("/admin/forgot", function(){
+$app->get('/admin/login', function() {
 
     $page = new PageAdmin([
         "header"=>false,
         "footer"=>false
     ]);
 
-    $page->setTpl("forgot");
+    $page->setTpl("login");
+
+});
+
+$app->post('/admin/login', function() {
+
+    User::login($_POST["login"], $_POST["password"]);
+
+    header("Location: /admin");
+    exit;
+
+});
+
+$app->get('/admin/logout', function() {
+
+    User::logout();
+
+    header("Location: /admin/login");
+    exit;
+
+});
+
+$app->get("/admin/forgot", function() {
+
+    $page = new PageAdmin([
+        "header"=>false,
+        "footer"=>false
+    ]);
+
+    $page->setTpl("forgot");    
 
 });
 
@@ -66,9 +69,10 @@ $app->get("/admin/forgot/sent", function(){
         "footer"=>false
     ]);
 
-    $page->setTpl("forgot-sent");
+    $page->setTpl("forgot-sent");   
 
 });
+
 
 $app->get("/admin/forgot/reset", function(){
 
@@ -90,7 +94,7 @@ $app->post("/admin/forgot/reset", function(){
 
     $forgot = User::validForgotDecrypt($_POST["code"]); 
 
-    User::setForgotUsed($forgot["idrecovery"]);
+    User::setFogotUsed($forgot["idrecovery"]);
 
     $user = new User();
 
@@ -109,4 +113,4 @@ $app->post("/admin/forgot/reset", function(){
 
 });
 
-?>
+ ?>
