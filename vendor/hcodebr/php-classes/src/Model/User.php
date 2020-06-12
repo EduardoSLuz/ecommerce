@@ -326,7 +326,7 @@ class User extends Model {
 
 	}
 
-		public static function setError($msg)
+	public static function setError($msg)
 	{
 
 		$_SESSION[User::ERROR] = $msg;
