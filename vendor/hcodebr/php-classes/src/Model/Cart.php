@@ -208,7 +208,7 @@ class Cart extends Model{
 				"nCdEmpresa"=>"",
 				"sDsSenha"=>"",
 				"nCdServico"=>"40010",
-				"sCepOrigem"=>"09853120",
+				"sCepOrigem"=>"79020200",
 				"sCepDestino"=>$nrzipcode,
 				"nVlPeso"=>$totals["vlweight"],
 				"nCdFormato"=>"1",

@@ -6,7 +6,7 @@ use \Hcode\DB\Sql;
 use \Hcode\Model;
 use \Hcode\Mailer;
 
-class Product extends Model{
+class Product extends Model {
 
 	public static function listAll()
 	{
@@ -31,13 +31,13 @@ class Product extends Model{
 		return $list;
 
 	}
- 	
- 	public function save()
+
+	public function save()
 	{
 
 		$sql = new Sql();
 
-		$results = $sql->select("CALL sp_products_save(:idproduct, :desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight ,:desurl)", array(
+		$results = $sql->select("CALL sp_products_save(:idproduct, :desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl)", array(
 			":idproduct"=>$this->getidproduct(),
 			":desproduct"=>$this->getdesproduct(),
 			":vlprice"=>$this->getvlprice(),
@@ -57,9 +57,9 @@ class Product extends Model{
 
 		$sql = new Sql();
 
-		$results = $sql->select("SELECT * FROM tb_products WHERE idproduct = :idproduct", array(
-			":idproduct" => $idproduct
-		));
+		$results = $sql->select("SELECT * FROM tb_products WHERE idproduct = :idproduct", [
+			':idproduct'=>$idproduct
+		]);
 
 		$this->setData($results[0]);
 
@@ -69,10 +69,10 @@ class Product extends Model{
 	{
 
 		$sql = new Sql();
-	
-		$sql->query("DELETE FROM tb_products WHERE idproduct = :idproduct", array(
-			":idproduct" => $this->getidproduct()
-		));
+
+		$sql->query("DELETE FROM tb_products WHERE idproduct = :idproduct", [
+			':idproduct'=>$this->getidproduct()
+		]);
 
 	}
 
@@ -155,7 +155,7 @@ class Product extends Model{
 		$sql = new Sql();
 
 		$rows = $sql->select("SELECT * FROM tb_products WHERE desurl = :desurl LIMIT 1", [
-			":desurl"=>$desurl
+			':desurl'=>$desurl
 		]);
 
 		$this->setData($rows[0]);
@@ -170,60 +170,63 @@ class Product extends Model{
 		return $sql->select("
 			SELECT * FROM tb_categories a INNER JOIN tb_productscategories b ON a.idcategory = b.idcategory WHERE b.idproduct = :idproduct
 		", [
-			":idproduct"=>$this->getidproduct()
+
+			':idproduct'=>$this->getidproduct()
 		]);
 
 	}
 
 	public static function getPage($page = 1, $itemsPerPage = 10)
 	{
+
 		$start = ($page - 1) * $itemsPerPage;
 
 		$sql = new Sql();
 
 		$results = $sql->select("
-			SELECT SQL_CALC_FOUND_ROWS * 
+			SELECT SQL_CALC_FOUND_ROWS *
 			FROM tb_products 
 			ORDER BY desproduct
-			LIMIT $start, $itemsPerPage
-
+			LIMIT $start, $itemsPerPage;
 		");
 
-		$resultsTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
 
 		return [
-			"data"=>$results,
-			"total"=>(int)$resultsTotal[0]["nrtotal"],
-			"pages"=>ceil($resultsTotal[0]["nrtotal"]/$itemsPerPage)
+			'data'=>$results,
+			'total'=>(int)$resultTotal[0]["nrtotal"],
+			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
+
 	}
 
 	public static function getPageSearch($search, $page = 1, $itemsPerPage = 10)
 	{
+
 		$start = ($page - 1) * $itemsPerPage;
 
 		$sql = new Sql();
 
 		$results = $sql->select("
-			SELECT SQL_CALC_FOUND_ROWS * 
+			SELECT SQL_CALC_FOUND_ROWS *
 			FROM tb_products 
-			WHERE desproduct LIKE :search 
+			WHERE desproduct LIKE :search
 			ORDER BY desproduct
-			LIMIT $start, $itemsPerPage
-
-		",[
-			":search"=>"%".$search."%"
+			LIMIT $start, $itemsPerPage;
+		", [
+			':search'=>'%'.$search.'%'
 		]);
 
-		$resultsTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
 
 		return [
-			"data"=>$results,
-			"total"=>(int)$resultsTotal[0]["nrtotal"],
-			"pages"=>ceil($resultsTotal[0]["nrtotal"]/$itemsPerPage)
+			'data'=>$results,
+			'total'=>(int)$resultTotal[0]["nrtotal"],
+			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
 		];
+
 	}
 
 }
 
-?>
+ ?>
